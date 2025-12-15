@@ -2,6 +2,7 @@ const content = document.getElementById("content")
 const notFound = document.getElementById("not-found")
 const searchForm = document.getElementById("user-search")
 const searchInput = document.getElementById("search-input")
+const noResultMessage = document.getElementById("no-result")
 const url = "https://api.github.com/users"
 
 async function fetchData(username){
@@ -10,7 +11,7 @@ async function fetchData(username){
 
         if(!res.ok){
             showNotFound()
-            throw new Error(`Response status: ${res.status}`)
+            return
         }
         const data = await res.json()
         showFound()
@@ -24,6 +25,7 @@ async function fetchData(username){
 function showNotFound(){
     content.classList.add("hidden")
     notFound.classList.remove("hidden")
+    noResultMessage.classList.remove("hidden")
 }
 
 function showFound(){
@@ -88,24 +90,18 @@ function renderProfileInfo(data){
         location.textContent = "Not available"
     }
 
-    if(data.location){
-        linkContainers[0].classList.remove("greyed-out")
-        location.textContent = data.location
-    }
-    else{
-        linkContainers[0].classList.add("greyed-out")
-        location.textContent = "Not available"
-    }
-
     if(data.twitter_username){
         linkContainers[1].classList.remove("greyed-out")
         twitter.innerHTML = `<a href="https://x.com/${data.twitter_username}">${data.twitter_username}</a>`
+        company.style.cursor = "pointer"
     }
     else{
         linkContainers[1].classList.add("greyed-out")
-        location.innerHTML = "Not available"
+        twitter.innerHTML = "Not available"
+        company.style.cursor = "auto"
     }
 
+    
     github.href = data.url
 
     if(data.company){
@@ -114,11 +110,15 @@ function renderProfileInfo(data){
         <a href="https://github.com/${data.company.startsWith("@") ? data.company.substring(1,data.company.length) : data.company}">
           ${!data.company.startsWith ? "@" + data.company : data.company}
         </a>`
+        company.style.cursor = "pointer"
     }
     else{
         linkContainers[3].classList.add("greyed-out")
         company.innerHTML = "Not available"
+        company.style.cursor = "auto"
     }
+
+    addFocusStyleLinks()
 }
 
 searchForm.addEventListener("submit", (e)=>{
@@ -126,5 +126,42 @@ searchForm.addEventListener("submit", (e)=>{
     if(searchInput.value.trim() !== ""){
         fetchData(searchInput.value.trim())
     }
+    else{
+
+    }
     searchForm.reset()
 })
+
+function addFocusStyleLinks(){
+    const links = document.getElementsByTagName("a")
+
+    for(let i = 0; i < links.length; i++){
+        links[i].addEventListener("focus", highlight)
+        
+    }
+}
+
+function removeFocusStyleLinks(){
+    const links = document.getElementsByTagName("a")
+
+    for(let i=0; i<links.length;i++){
+        links[i].addEventListener("blur", removeHightlight)
+    }
+
+}
+
+function highlight(e){
+    e.target.style.outline = "none"
+    e.target.closest("div").style.outline = "2px solid var(--blue-500)"
+} 
+
+function removeHightlight(e){
+    e.target.closest("div").style.outline = "none"
+}
+
+searchInput.addEventListener("input", () =>{
+    noResultMessage.classList.add("hidden")
+})
+
+addFocusStyleLinks()
+removeFocusStyleLinks()

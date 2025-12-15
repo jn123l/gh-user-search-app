@@ -160,6 +160,7 @@ input[type="text"]{
     font-size: calc(13rem/16);
     line-height: 1.4;
     letter-spacing: 2.5px;
+    font-weight: 700;
 }
 
 .not-found h2{
@@ -172,8 +173,16 @@ input[type="text"]{
     line-height: 1.5;
 }
 
+#no-result{
+    font-size: calc(13rem/16);
+    font-weight: bold;
+}
+
 @media(min-width: 768px){
     input[type="text"]{
+        font-size: calc(18rem/16);
+    }
+    #no-result{
         font-size: calc(18rem/16);
     }
 }
@@ -258,6 +267,10 @@ input[type="text"]{
 .not-found p{
     color: var(--not-available);
 }
+
+#no-result{
+    color: var(--red-500);
+}
 /* Layout */
 
 div.container{
@@ -297,6 +310,9 @@ header{
     gap: var(--spacing-150);
     border: none;
     background: inherit;
+    cursor: pointer;
+    padding: var(--spacing-025);
+    border-radius: var(--spacing-075);
 }
 
 svg.mode-icon{
@@ -312,6 +328,7 @@ section.search-container{
     height: 69px;
     border-radius: var(--radius-16);
     box-shadow: var(--shadow);
+    position: relative;
 }
 
 div.search-icon-container{
@@ -343,6 +360,11 @@ input[type="text"]{
     height: 48px;
     border: none;
     border-radius: var(--radius-10);
+    cursor: pointer;
+}
+
+#search-btn:hover, #search-btn:active{
+    background-color: var(--blue-300);
 }
 
 @media (min-width: 768px){
@@ -357,7 +379,7 @@ input[type="text"]{
     }
 
     #search-btn{
-        width: 107px;
+        width: 140px;
     }
 }
 
@@ -465,8 +487,14 @@ section.links-grid{
 
 div.link-container{
     display: flex;
-    align-items: center;;
+    align-items: center;
     gap: var(--spacing-200);
+    padding: var(--spacing-050);
+    border-radius: var(--radius-6);
+}
+
+div.link-container:not(:first-child){
+    cursor: pointer;
 }
 
 div.link-container > span > a{
@@ -489,7 +517,25 @@ section.not-found h2{
         padding:0 0 var(--spacing-600);
         margin: 0 43px 0 181px;
         grid-template-columns: 1fr 1fr;
+        column-gap: var(--spacing-200);
     }
+    section.not-found{
+        padding: var(--spacing-600);
+    }
+}
+
+#no-result{
+    position: absolute;
+    top: 23px;
+    right: 143px;
+}
+:focus{
+    outline: 2px solid var(--blue-500)
+}
+
+
+#search-btn:focus{
+    outline-offset: 2px;
 }
 
 /* Utility classes */

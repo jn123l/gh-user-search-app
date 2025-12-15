@@ -15,7 +15,7 @@ function setTheme(theme){
 function updateToggleText(theme){
     const modeIcons = document.getElementsByClassName("mode-icon")
     
-    toggleText.textContent = theme === "dark" ? "Light" : "Dark"
+    toggleText.textContent = theme === "dark" ? "LIGHT" : "DARK"
     if(theme === "dark"){
         modeIcons[0].classList.remove("hidden")
         modeIcons[1].classList.add("hidden")

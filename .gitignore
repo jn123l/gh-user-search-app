@@ -40,3 +40,4 @@ npm-debug.log*
 Thumbs.db
 
 .pdf
+*.txt
